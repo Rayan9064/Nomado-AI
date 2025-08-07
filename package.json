@@ -1,0 +1,63 @@
+{
+  "name": "nomado-ai-smartcontracts",
+  "version": "1.0.0",
+  "description": "Smart contract backend for Nomado AI - A decentralized travel and booking assistant for digital nomads",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "test:gas": "REPORT_GAS=true npx hardhat test",
+    "test:coverage": "npx hardhat coverage",
+    "deploy:local": "npx hardhat run scripts/deploy.ts --network localhost",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.ts --network sepolia",
+    "deploy:polygon": "npx hardhat run scripts/deploy.ts --network polygon",
+    "deploy:hedera": "npx hardhat run scripts/deploy.ts --network hedera",
+    "node": "npx hardhat node",
+    "clean": "npx hardhat clean",
+    "typechain": "npx hardhat typechain",
+    "verify:sepolia": "npx hardhat verify --network sepolia",
+    "verify:polygon": "npx hardhat verify --network polygon",
+    "size": "npx hardhat size-contracts",
+    "flatten": "npx hardhat flatten"
+  },
+  "keywords": [
+    "smart-contracts",
+    "solidity",
+    "ethereum",
+    "polygon",
+    "hedera",
+    "travel",
+    "booking",
+    "defi",
+    "reputation",
+    "escrow",
+    "rewards",
+    "staking",
+    "nomads",
+    "web3"
+  ],
+  "author": "Nomado AI Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nomado-ai/smart-contracts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nomado-ai/smart-contracts/issues"
+  },
+  "homepage": "https://github.com/nomado-ai/smart-contracts#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "@openzeppelin/contracts-upgradeable": "^5.4.0",
+    "@openzeppelin/hardhat-upgrades": "^3.9.1",
+    "@types/node": "^24.2.0",
+    "hardhat": "^2.26.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
