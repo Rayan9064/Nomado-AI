@@ -1,0 +1,14 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <rect x="50" y="50" width="300" height="200" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="80" y="80" width="40" height="40" fill="#9ca3af"/>
+  <rect x="140" y="80" width="40" height="40" fill="#9ca3af"/>
+  <rect x="200" y="80" width="40" height="40" fill="#9ca3af"/>
+  <rect x="260" y="80" width="40" height="40" fill="#9ca3af"/>
+  <rect x="80" y="140" width="40" height="40" fill="#9ca3af"/>
+  <rect x="140" y="140" width="40" height="40" fill="#9ca3af"/>
+  <rect x="200" y="140" width="40" height="40" fill="#9ca3af"/>
+  <rect x="260" y="140" width="40" height="40" fill="#9ca3af"/>
+  <rect x="170" y="200" width="60" height="30" fill="#6b7280"/>
+  <text x="200" y="270" font-family="Arial, sans-serif" font-size="14" fill="#374151" text-anchor="middle">Hotel</text>
+</svg>
