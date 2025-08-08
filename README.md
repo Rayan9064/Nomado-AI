@@ -198,6 +198,43 @@ npm run test:gas
 npm run test:coverage
 ```
 
+## 🚀 Deployed Contracts
+
+### Hedera EVM Testnet (Chain ID: 296)
+**Deployment Date:** August 8, 2025
+
+| Contract | Address | Purpose |
+|----------|---------|---------|
+| **NomadoAI** (Main) | `0xeb3FC122deCCe205C4767a9535948F0c61f8394E` | Platform orchestrator and main entry point |
+| **BookingManager** | `0x85Ca575996344cf7d033D58505D4bEf9A75313A2` | Travel booking management (flights, hotels, co-working) |
+| **UserReputation** | `0xc15d3598925b4e8535Fc32578ed9E33394c03B94` | Trust scores, ratings, and user profiles |
+| **PaymentTracker** | `0xa945ae577157f1a11E7ADa90a014F05e052e3596` | Secure escrow and payment processing |
+| **RewardSystem** | `0x67ffdb76d60e6637fd609f622139d98830b38A48` | Staking and loyalty rewards |
+
+**Network Details:**
+- **RPC URL:** `https://testnet.hashio.io/api`
+- **Explorer:** https://hashscan.io/testnet
+- **Gas Token:** HBAR
+- **Deployer:** `0x1Df56fdc79A9EcEFa76407278d852d81A6A338BA`
+
+### Contract Verification
+```bash
+# Verify all contracts on Hedera
+npx hardhat verify 0x85Ca575996344cf7d033D58505D4bEf9A75313A2 --network hedera
+npx hardhat verify 0xc15d3598925b4e8535Fc32578ed9E33394c03B94 --network hedera
+npx hardhat verify 0xa945ae577157f1a11E7ADa90a014F05e052e3596 --network hedera
+npx hardhat verify 0x67ffdb76d60e6637fd609f622139d98830b38A48 --network hedera
+npx hardhat verify 0xeb3FC122deCCe205C4767a9535948F0c61f8394E --network hedera
+```
+
+### Usage with Deployed Contracts
+```javascript
+// Connect to deployed contracts on Hedera testnet
+const nomadoAI = await ethers.getContractAt("NomadoAI", "0xeb3FC122deCCe205C4767a9535948F0c61f8394E");
+const bookingManager = await ethers.getContractAt("BookingManager", "0x85Ca575996344cf7d033D58505D4bEf9A75313A2");
+// ... etc
+```
+
 ### 4. Verify Deployed Contracts
 ```bash
 # Verify on Etherscan (Sepolia)

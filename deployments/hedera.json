@@ -1,0 +1,19 @@
+{
+  "network": "hedera",
+  "deployer": "0x1Df56fdc79A9EcEFa76407278d852d81A6A338BA",
+  "timestamp": "2025-08-08T02:03:19.882Z",
+  "contracts": {
+    "BookingManager": "0x85Ca575996344cf7d033D58505D4bEf9A75313A2",
+    "UserReputation": "0xc15d3598925b4e8535Fc32578ed9E33394c03B94",
+    "PaymentTracker": "0xa945ae577157f1a11E7ADa90a014F05e052e3596",
+    "RewardSystem": "0x67ffdb76d60e6637fd609f622139d98830b38A48",
+    "NomadoAI": "0xeb3FC122deCCe205C4767a9535948F0c61f8394E"
+  },
+  "transactionHashes": {
+    "BookingManager": "0x05e93be0900950d19b2303e9af1b7ff893148453d13e07f429bf2d2a2d78ab69",
+    "UserReputation": "0x11142b702c6123ea7836584212b6681ecba9e81fb3f93cf6b3c1831ffeb39f19",
+    "PaymentTracker": "0x5b838d3745ebb0cb5a6c1b746b5f9d9c26e520d1e9e791b726c9c384d6237459",
+    "RewardSystem": "0xcef35afadfa77a961a9ee89a4f5196510236d5b4b0bfeb97d07b3b14c4c814fd",
+    "NomadoAI": "0x5e901cb261eb3148ba0eac472376f24fe1d28cb9a6d3634a6236ed559bc167a4"
+  }
+}

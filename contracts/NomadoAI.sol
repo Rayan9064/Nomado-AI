@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.22;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./BookingManager.sol";
 import "./UserReputation.sol";
 import "./PaymentTracker.sol";
@@ -17,7 +18,8 @@ import "./RewardSystem.sol";
 contract NomadoAI is 
     Initializable,
     OwnableUpgradeable,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    UUPSUpgradeable
 {
     // Contract references
     BookingManager public bookingManager;
@@ -130,11 +132,6 @@ contract NomadoAI is
         paymentTracker = PaymentTracker(payable(_paymentTracker));
         rewardSystem = RewardSystem(payable(_rewardSystem));
         
-        // Set cross-contract authorizations
-        userReputation.setContractAuthorization(address(this), true);
-        paymentTracker.setContractAuthorization(address(this), true);
-        rewardSystem.setContractAuthorization(address(this), true);
-        
         emit ContractsInitialized(_bookingManager, _userReputation, _paymentTracker, _rewardSystem);
     }
     
@@ -164,9 +161,9 @@ contract NomadoAI is
         require(_payee != address(0), "Invalid payee address");
         require(_payee != msg.sender, "Cannot book for yourself");
         
-        // Create booking
+        // Create booking (without sending ETH)
         uint256 bookingId = bookingManager.getTotalBookings() + 1;
-        bookingManager.createBooking{value: msg.value}(
+        bookingManager.createBooking(
             _bookingType,
             _serviceDate,
             _metadataHash,
@@ -174,7 +171,7 @@ contract NomadoAI is
             _refundDeadline
         );
         
-        // Create payment
+        // Create payment and send ETH to PaymentTracker
         uint256 platformFee = (msg.value * config.platformFeePercent) / 10000;
         string memory paymentHash = string(abi.encodePacked("NOMADO-", bookingId));
         
@@ -425,4 +422,9 @@ contract NomadoAI is
         escrow = paymentTracker.getEscrow(_bookingId);
         dispute = paymentTracker.getDispute(_bookingId);
     }
+    
+    /**
+     * @dev Required by UUPSUpgradeable - only owner can upgrade
+     */
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 }

@@ -8,7 +8,8 @@
     "test": "npx hardhat test",
     "test:gas": "REPORT_GAS=true npx hardhat test",
     "test:coverage": "npx hardhat coverage",
-    "deploy:local": "npx hardhat run scripts/deploy.ts --network localhost",
+    "test:local": "npx hardhat run scripts/test-contracts-locally.ts --network localhost",
+    "deploy:local": "npx hardhat run scripts/deploy-local.ts --network localhost",
     "deploy:sepolia": "npx hardhat run scripts/deploy.ts --network sepolia",
     "deploy:polygon": "npx hardhat run scripts/deploy.ts --network polygon",
     "deploy:hedera": "npx hardhat run scripts/deploy.ts --network hedera",
@@ -59,5 +60,8 @@
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1"
   }
 }
