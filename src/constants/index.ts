@@ -1,8 +1,8 @@
 export const APP_CONFIG = {
-  name: 'Unified AI Booking Agent',
-  description: 'AI-powered booking agent for flights, hotels, tours, and activities with Web3 payments',
+  name: 'Nomado AI',
+  description: 'AI-powered booking platform for flights, hotels, tours, and activities with Web3 payments',
   version: '1.0.0',
-  developer: 'AI Booking Team'
+  developer: 'Nomado AI Team'
 };
 
 export const BOOKING_TYPES = {
@@ -50,8 +50,8 @@ export const MCP_CONFIG = {
 };
 
 export const WALLET_CONFIG = {
-  name: 'Aya Wallet',
+  name: 'WalletConnect',
   type: 'Web3',
-  supportedNetworks: ['Ethereum', 'Polygon', 'BSC'],
-  bridgeProvider: 'P2P.me'
+  supportedNetworks: ['Ethereum', 'Polygon', 'Arbitrum', 'Optimism'],
+  connectors: ['MetaMask', 'WalletConnect', 'Coinbase Wallet']
 };

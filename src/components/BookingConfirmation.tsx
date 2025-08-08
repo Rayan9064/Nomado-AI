@@ -243,7 +243,7 @@ export default function BookingConfirmation({ confirmation, onNewSearch, onViewB
 
       {/* Next Steps */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 className="font-semibold text-blue-900 mb-3">What's Next?</h3>
+        <h3 className="font-semibold text-blue-900 mb-3">What&apos;s Next?</h3>
         <div className="space-y-2 text-sm text-blue-800">
           <p>✓ Confirmation email sent to your registered email address</p>
           <p>✓ Add booking details to your calendar</p>

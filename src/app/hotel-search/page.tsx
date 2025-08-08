@@ -72,7 +72,7 @@ export default function HotelSearchDemo() {
             <div className="space-y-4 text-gray-700 dark:text-gray-300">
               <div>
                 <h3 className="font-semibold text-lg mb-2">1. Test the Mock API</h3>
-                <p>Click the "Test Mock Hotel API" button to verify the system is working correctly.</p>
+                <p>Click the &quot;Test Mock Hotel API&quot; button to verify the system is working correctly.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-2">2. Search by City</h3>
@@ -80,7 +80,7 @@ export default function HotelSearchDemo() {
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-2">3. Search Near Me</h3>
-                <p>Click the "Near Me" button to find hotels based on your location (simulated with demo data).</p>
+                <p>Click the &quot;Near Me&quot; button to find hotels based on your location (simulated with demo data).</p>
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-2">4. View Results</h3>

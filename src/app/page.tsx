@@ -14,12 +14,12 @@ export default function Home() {
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
               <GradientText>
-                Unified AI Booking Agent
+                Nomado AI
               </GradientText>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Book flights, hotels, tours, and activities using natural language.
-              Pay seamlessly with crypto through Aya Wallet.
+              Pay seamlessly with crypto through WalletConnect.
             </p>
           </div>
 

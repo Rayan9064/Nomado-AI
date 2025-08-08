@@ -73,7 +73,7 @@ export function HotelSearchInterface({ onSearch, onHotelsFound }: HotelSearchInt
           Find Your Perfect Stay
         </h1>
         <p className="text-gray-600 dark:text-gray-300 text-lg">
-          Search and book hotels worldwide with our AI-powered booking agent
+          Search and book hotels worldwide with Nomado AI
         </p>
         <div className="mt-4 p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
           <p className="text-sm text-blue-800 dark:text-blue-200">

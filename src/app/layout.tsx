@@ -6,8 +6,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Unified AI Booking Agent',
-  description: 'AI-powered booking agent for flights, hotels, tours, and activities with Web3 payments',
+  title: 'Nomado AI',
+  description: 'AI-powered booking platform for flights, hotels, tours, and activities with WalletConnect Web3 payments',
 }
 
 export default function RootLayout({

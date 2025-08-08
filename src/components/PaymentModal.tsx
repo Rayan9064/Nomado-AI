@@ -3,6 +3,7 @@
 import type { BookingOption } from '@/types';
 import { AlertCircle, CheckCircle, CreditCard, Shield, Wallet, X } from 'lucide-react';
 import { useState } from 'react';
+import { useWeb3, getChainInfo } from './Web3Provider';
 
 interface PaymentModalProps {
   booking: BookingOption;
@@ -14,6 +15,7 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
   const [paymentMethod, setPaymentMethod] = useState<'crypto' | 'bridge'>('crypto');
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentStep, setPaymentStep] = useState<'select' | 'processing' | 'success'>('select');
+  const { isConnected, address, chainId, connect } = useWeb3();
 
   const formatPrice = () => {
     return new Intl.NumberFormat('en-IN', {
@@ -24,6 +26,15 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
   };
 
   const handlePayment = async () => {
+    if (!isConnected) {
+      try {
+        await connect('MetaMask');
+      } catch (error) {
+        console.error('Failed to connect wallet:', error);
+        return;
+      }
+    }
+
     setIsProcessing(true);
     setPaymentStep('processing');
 
@@ -37,6 +48,8 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
       onPaymentComplete(transactionId);
     }, 2000);
   };
+
+  const chainInfo = chainId ? getChainInfo(chainId) : null;
 
   if (paymentStep === 'processing') {
     return (
@@ -109,8 +122,11 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
               <div className="flex items-center space-x-3">
                 <Wallet className="h-6 w-6 text-blue-600" />
                 <div>
-                  <div className="font-medium">Aya Wallet (Web3)</div>
-                  <div className="text-sm text-gray-500">Direct crypto payment</div>
+                  <div className="font-medium">WalletConnect / MetaMask</div>
+                  <div className="text-sm text-gray-500">
+                    {isConnected ? `Connected: ${address?.slice(0, 6)}...${address?.slice(-4)}` : 'Connect your Web3 wallet'}
+                    {chainInfo && <span className="ml-1">({chainInfo.name})</span>}
+                  </div>
                 </div>
               </div>
               {booking.type === 'flight' || booking.type === 'tour' ? (
@@ -155,8 +171,8 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
                 <span className="font-medium text-blue-900">Secure Crypto Payment</span>
               </div>
               <p className="text-blue-800 text-sm">
-                Your payment will be processed directly through Aya Wallet using smart contracts.
-                Transaction will be confirmed on the blockchain.
+                Your payment will be processed directly through your connected Web3 wallet using smart contracts.
+                Transaction will be confirmed on the {chainInfo?.name || 'blockchain'}.
               </p>
             </div>
           ) : (
@@ -166,7 +182,7 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
                 <span className="font-medium text-purple-900">Bridge Payment</span>
               </div>
               <p className="text-purple-800 text-sm">
-                Your crypto will be converted and transferred to the vendor's traditional payment system
+                Your crypto will be converted and transferred to the vendor&apos;s traditional payment system
                 through our secure P2P.me bridge.
               </p>
             </div>
@@ -186,7 +202,7 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
             disabled={isProcessing}
             className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
           >
-            {isProcessing ? 'Processing...' : `Pay ${formatPrice()}`}
+            {isProcessing ? 'Processing...' : isConnected ? `Pay ${formatPrice()}` : `Connect Wallet & Pay ${formatPrice()}`}
           </button>
         </div>
 

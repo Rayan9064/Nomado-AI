@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Bot className="h-6 w-6 text-blue-400" />
-              <span className="text-xl font-bold">AI Booking</span>
+              <span className="text-xl font-bold">Nomado AI</span>
             </div>
             <p className="text-gray-400 text-sm">
               The future of travel booking with AI and Web3 payments.
@@ -41,9 +41,9 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Technology</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">AI Agent</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">AI Technology</a></li>
               <li><a href="#" className="hover:text-white transition-colors">MCP Protocol</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Aya Wallet</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">WalletConnect</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Web3 Payments</a></li>
             </ul>
           </div>
@@ -64,7 +64,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2025 AI Booking Agent. All rights reserved. Powered by MCP and Aya Wallet.</p>
+          <p>&copy; 2025 Nomado AI. All rights reserved. Powered by MCP and WalletConnect.</p>
         </div>
       </div>
     </footer>

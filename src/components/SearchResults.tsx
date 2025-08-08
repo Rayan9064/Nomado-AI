@@ -49,7 +49,7 @@ export default function SearchResults({ searchResult, onBookNow, onRefineSearch 
           <div className="flex items-center space-x-4">
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
-                Search Results for "{searchResult.query}"
+                Search Results for &quot;{searchResult.query}&quot;
               </h2>
               <p className="text-sm text-gray-600 flex items-center space-x-2">
                 <span>{filteredResults.length} of {searchResult.totalFound} results</span>
