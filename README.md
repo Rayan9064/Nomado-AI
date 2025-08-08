@@ -1,8 +1,8 @@
 # Nomado AI Smart Contracts 🌍⛓️
 
 ## Primary Contact
-**Name:** [Your Name]  
-**Telegram:** @[your_telegram_handle]
+**Name:** Mohammed Rayan A, Younus, L Priyan Raj 
+**Telegram:** @rayan9064, @Younus_37, @Priyan370
 
 ## Team
 **Team Name:** Nomado AI Team (or Solo if individual contributor)
