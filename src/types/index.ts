@@ -17,7 +17,11 @@ export interface Message {
   content: string;
   timestamp: Date;
   bookingOptions?: BookingOption[];
+  bookings?: BookingOption[];
   searchResults?: SearchResult[];
+  mcpProcessed?: boolean;
+  agentResponse?: any;
+  confidence?: number;
 }
 
 export interface SearchResult {

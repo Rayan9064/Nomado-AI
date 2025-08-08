@@ -1,21 +1,68 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { aiTravelAgent } from '@/lib/mcp/client';
 
 export async function POST(request: NextRequest) {
   try {
     const { query } = await request.json();
     
-    // Simulate AI processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    console.log('🔍 Processing travel query with MCP AI Agent:', query);
     
-    // Mock booking options based on query
+    // Use MCP AI Agent to process the query
+    const agentResponse = await aiTravelAgent.processQuery(query);
+    
+    // If we got recommendations, format them for the UI
+    if (agentResponse.recommendations && agentResponse.recommendations.length > 0) {
+      const formattedBookings = agentResponse.recommendations.map(rec => ({
+        id: rec.id,
+        type: rec.type,
+        title: rec.title,
+        description: rec.description,
+        price: rec.price * 100, // Convert to paisa for UI consistency
+        currency: rec.currency,
+        rating: rec.rating,
+        details: {
+          location: rec.location,
+          amenities: rec.amenities,
+          ...rec.details
+        }
+      }));
+
+      return NextResponse.json({
+        success: true,
+        bookings: formattedBookings,
+        agentMessage: agentResponse.message,
+        confidence: agentResponse.confidence,
+        type: agentResponse.type,
+        mcpProcessed: true
+      });
+    }
+    
+    // For non-search responses (advice, itinerary, etc.)
+    if (agentResponse.type === 'advice' || agentResponse.type === 'itinerary') {
+      return NextResponse.json({
+        success: true,
+        bookings: [],
+        agentMessage: agentResponse.message,
+        agentResponse: agentResponse.content,
+        confidence: agentResponse.confidence,
+        type: agentResponse.type,
+        mcpProcessed: true
+      });
+    }
+    
+    // Fallback to original mock system if MCP doesn't return results
+    console.log('📱 Falling back to mock bookings');
     const mockBookings = generateMockBookings(query);
     
     return NextResponse.json({
       success: true,
       bookings: mockBookings,
-      mcpIntent: generateMCPIntent(query)
+      agentMessage: 'Here are some options I found for you:',
+      mcpIntent: generateMCPIntent(query),
+      mcpProcessed: false
     });
   } catch (error) {
+    console.error('Booking API error:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to process booking request' },
       { status: 500 }
