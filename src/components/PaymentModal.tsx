@@ -84,6 +84,12 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
         metadataURI: ''
       };
 
+      // Check if we're in mock mode
+      const isMockMode = await import('@/services/contractService').then(m => m.contractService.isMockMode());
+      if (isMockMode) {
+        console.log('🔧 Processing MOCK transaction - no real blockchain interaction');
+      }
+
       const result = await createBooking(bookingData);
       
       setPaymentStep('success');

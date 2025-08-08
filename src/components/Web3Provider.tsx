@@ -65,6 +65,14 @@ export default function Web3Provider({ children }: Web3ProviderProps) {
     if (provider && chainId) {
       try {
         await contractService.initialize(provider, chainId)
+        
+        // Show user if mock mode is enabled
+        if (contractService.isMockMode()) {
+          console.log('🔧 Contract initialized in MOCK MODE - transactions will be simulated')
+        } else {
+          console.log('🔗 Contract initialized successfully - using real blockchain')
+        }
+        
         if (signer) {
           await contractService.setSigner(signer)
         }

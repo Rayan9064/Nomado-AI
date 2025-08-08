@@ -1,18 +1,35 @@
 'use client';
 
-import { Bot, Menu, Wallet, X, ChevronDown, Calendar } from 'lucide-react';
+import { Bot, Menu, Wallet, X, ChevronDown, Calendar, TestTube } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 import BookingHistoryModal from './BookingHistoryModal';
 import { useWeb3, getChainInfo } from './Web3Provider';
+import { contractService } from '@/services/contractService';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showWalletOptions, setShowWalletOptions] = useState(false);
   const [showBookingHistory, setShowBookingHistory] = useState(false);
+  const [isMockMode, setIsMockMode] = useState(false);
   const { isConnected, address, chainId, connector, connect, disconnect } = useWeb3();
   const walletDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Check mock mode status
+  useEffect(() => {
+    const checkMockMode = () => {
+      setIsMockMode(contractService.isMockMode());
+    };
+    
+    // Check initially
+    checkMockMode();
+    
+    // Check periodically (when contract initializes)
+    const interval = setInterval(checkMockMode, 1000);
+    
+    return () => clearInterval(interval);
+  }, [isConnected, chainId]);
 
   // Close wallet dropdown when clicking outside
   useEffect(() => {
@@ -90,6 +107,15 @@ export default function Header() {
           {/* Wallet Connection & Theme Toggle */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
+            
+            {/* Mock Mode Indicator */}
+            {isMockMode && (
+              <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-700">
+                <TestTube className="h-4 w-4" />
+                <span className="hidden sm:inline font-medium">Mock Mode</span>
+                <span className="sm:hidden">Mock</span>
+              </div>
+            )}
             
             {/* My Bookings Button */}
             {isConnected && (
