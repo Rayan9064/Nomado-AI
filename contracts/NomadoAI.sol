@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -125,10 +125,10 @@ contract NomadoAI is
         require(_paymentTracker != address(0), "Invalid PaymentTracker address");
         require(_rewardSystem != address(0), "Invalid RewardSystem address");
         
-        bookingManager = BookingManager(_bookingManager);
+        bookingManager = BookingManager(payable(_bookingManager));
         userReputation = UserReputation(_userReputation);
-        paymentTracker = PaymentTracker(_paymentTracker);
-        rewardSystem = RewardSystem(_rewardSystem);
+        paymentTracker = PaymentTracker(payable(_paymentTracker));
+        rewardSystem = RewardSystem(payable(_rewardSystem));
         
         // Set cross-contract authorizations
         userReputation.setContractAuthorization(address(this), true);
@@ -316,8 +316,7 @@ contract NomadoAI is
         returns (
             uint256 totalBookings,
             uint256 totalPayments,
-            uint256 totalReviews,
-            uint256 totalUsers
+            uint256 totalReviews
         ) 
     {
         totalBookings = bookingManager.getTotalBookings();
