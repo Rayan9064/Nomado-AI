@@ -1,14 +1,16 @@
 'use client';
 
-import { Bot, Menu, Wallet, X, ChevronDown } from 'lucide-react';
+import { Bot, Menu, Wallet, X, ChevronDown, Calendar } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
+import BookingHistoryModal from './BookingHistoryModal';
 import { useWeb3, getChainInfo } from './Web3Provider';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showWalletOptions, setShowWalletOptions] = useState(false);
+  const [showBookingHistory, setShowBookingHistory] = useState(false);
   const { isConnected, address, chainId, connector, connect, disconnect } = useWeb3();
   const walletDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -88,6 +90,17 @@ export default function Header() {
           {/* Wallet Connection & Theme Toggle */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
+            
+            {/* My Bookings Button */}
+            {isConnected && (
+              <button
+                onClick={() => setShowBookingHistory(true)}
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                <Calendar className="h-4 w-4" />
+                <span className="hidden sm:inline">My Bookings</span>
+              </button>
+            )}
             
             {/* Wallet Connection */}
             <div className="relative" ref={walletDropdownRef}>
@@ -187,6 +200,12 @@ export default function Header() {
           </div>
         )}
       </div>
+      
+      {/* Booking History Modal */}
+      <BookingHistoryModal
+        isOpen={showBookingHistory}
+        onClose={() => setShowBookingHistory(false)}
+      />
     </header>
   );
 }

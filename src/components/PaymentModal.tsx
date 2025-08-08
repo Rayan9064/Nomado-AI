@@ -14,8 +14,9 @@ interface PaymentModalProps {
 export default function PaymentModal({ booking, onClose, onPaymentComplete }: PaymentModalProps) {
   const [paymentMethod, setPaymentMethod] = useState<'crypto' | 'bridge'>('crypto');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentStep, setPaymentStep] = useState<'select' | 'processing' | 'success'>('select');
-  const { isConnected, address, chainId, connect } = useWeb3();
+  const [paymentStep, setPaymentStep] = useState<'select' | 'processing' | 'success' | 'error'>('select');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const { isConnected, address, chainId, connect, createBooking } = useWeb3();
 
   const formatPrice = () => {
     return new Intl.NumberFormat('en-IN', {
@@ -25,28 +26,77 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
     }).format(booking.price);
   };
 
+  const calculateCheckInDate = () => {
+    // Default to tomorrow if no date specified
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    if (booking.details?.checkIn) {
+      return new Date(booking.details.checkIn);
+    }
+    return tomorrow;
+  };
+
+  const calculateCheckOutDate = () => {
+    const checkIn = calculateCheckInDate();
+    const checkOut = new Date(checkIn);
+    
+    if (booking.details?.checkOut) {
+      return new Date(booking.details.checkOut);
+    }
+    
+    // Default to 1 day later for hotels, 3 days for tours, 1 day for activities/flights
+    let daysToAdd = 1;
+    if (booking.type === 'tour') daysToAdd = 3;
+    if (booking.type === 'flight') daysToAdd = 0; // Same day for flights
+    
+    checkOut.setDate(checkOut.getDate() + daysToAdd);
+    return checkOut;
+  };
+
   const handlePayment = async () => {
     if (!isConnected) {
       try {
         await connect('MetaMask');
       } catch (error) {
         console.error('Failed to connect wallet:', error);
+        setErrorMessage('Failed to connect wallet. Please try again.');
+        setPaymentStep('error');
         return;
       }
     }
 
     setIsProcessing(true);
     setPaymentStep('processing');
+    setErrorMessage('');
 
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    try {
+      const checkInDate = calculateCheckInDate();
+      const checkOutDate = calculateCheckOutDate();
+      
+      const bookingData = {
+        type: booking.type,
+        details: booking,
+        amount: (booking.price / 100000).toString(), // Convert from paisa to ETH (rough conversion)
+        token: 'ETH', // Default to native token
+        checkInDate: Math.floor(checkInDate.getTime() / 1000),
+        checkOutDate: Math.floor(checkOutDate.getTime() / 1000),
+        metadataURI: ''
+      };
 
-    const transactionId = `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    setPaymentStep('success');
-    
-    setTimeout(() => {
-      onPaymentComplete(transactionId);
-    }, 2000);
+      const result = await createBooking(bookingData);
+      
+      setPaymentStep('success');
+      
+      setTimeout(() => {
+        onPaymentComplete(result.transactionHash);
+      }, 2000);
+    } catch (error) {
+      console.error('Payment failed:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'Payment failed. Please try again.');
+      setPaymentStep('error');
+      setIsProcessing(false);
+    }
   };
 
   const chainInfo = chainId ? getChainInfo(chainId) : null;
@@ -60,8 +110,11 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
             <h3 className="text-lg font-semibold mb-2">Processing Payment</h3>
             <p className="text-gray-600">
               {paymentMethod === 'crypto' 
-                ? 'Confirming transaction on blockchain...' 
+                ? 'Confirming blockchain transaction...' 
                 : 'Processing Web3 to Web2 bridge payment...'}
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Please do not close this window
             </p>
           </div>
         </div>
@@ -76,7 +129,46 @@ export default function PaymentModal({ booking, onClose, onPaymentComplete }: Pa
           <div className="text-center">
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Payment Successful!</h3>
-            <p className="text-gray-600">Your booking has been confirmed.</p>
+            <p className="text-gray-600 mb-4">Your booking has been confirmed on the blockchain.</p>
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-xs text-gray-500">
+                Network: {chainInfo?.name || 'Ethereum'}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                You will receive confirmation details shortly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (paymentStep === 'error') {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+          <div className="text-center">
+            <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2 text-red-600">Payment Failed</h3>
+            <p className="text-gray-600 mb-4">{errorMessage}</p>
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  setPaymentStep('select');
+                  setErrorMessage('');
+                }}
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Try Again
+              </button>
+              <button
+                onClick={onClose}
+                className="w-full bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
